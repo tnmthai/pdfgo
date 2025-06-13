@@ -24,20 +24,32 @@ def merge():
         writer.write(f)
     return send_file(out_path, as_attachment=True)
 
+import zipfile
+import io
+
 @app.route('/split', methods=['POST'])
 def split():
     file = request.files['pdf']
     reader = PdfReader(file)
-    files = []
-    for i, page in enumerate(reader.pages):
-        writer = PdfWriter()
-        writer.add_page(page)
-        output = os.path.join(UPLOAD_FOLDER, f'page_{i+1}.pdf')
-        with open(output, 'wb') as f:
-            writer.write(f)
-        files.append(output)
-    # Optionally: zip the files and send
-    return send_file(files[0], as_attachment=True)
+    output_paths = []
+    
+    # Create an in-memory zip file
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'w') as zipf:
+        for i, page in enumerate(reader.pages):
+            writer = PdfWriter()
+            writer.add_page(page)
+            output_filename = f'page_{i+1}.pdf'
+            output_path = os.path.join(UPLOAD_FOLDER, output_filename)
+            with open(output_path, 'wb') as out:
+                writer.write(out)
+            output_paths.append(output_path)
+
+            # Add to zip
+            zipf.write(output_path, arcname=output_filename)
+
+    zip_buffer.seek(0)
+    return send_file(zip_buffer, as_attachment=True, download_name='split_pages.zip', mimetype='application/zip')
 
 if __name__ == '__main__':
     import os
