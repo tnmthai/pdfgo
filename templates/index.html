@@ -1,0 +1,20 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PDF Tools</title>
+</head>
+<body>
+  <h2>Merge PDFs</h2>
+  <form action="/merge" method="post" enctype="multipart/form-data">
+    <input type="file" name="pdfs" multiple>
+    <button type="submit">Merge</button>
+  </form>
+
+  <h2>Split PDF</h2>
+  <form action="/split" method="post" enctype="multipart/form-data">
+    <input type="file" name="pdf">
+    <button type="submit">Split</button>
+  </form>
+</body>
+</html>
