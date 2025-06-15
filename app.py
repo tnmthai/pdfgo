@@ -50,6 +50,27 @@ def split():
 
     zip_buffer.seek(0)
     return send_file(zip_buffer, as_attachment=True, download_name='split_pages.zip', mimetype='application/zip')
+from pdf2image import convert_from_bytes
+
+@app.route('/split-to-images', methods=['POST'])
+def split_to_images():
+    file = request.files['pdf']
+    images = convert_from_bytes(file.read(), fmt='png')  # or 'jpeg'
+
+    image_paths = []
+    for i, img in enumerate(images):
+        filename = f'page_{i+1}.png'
+        path = os.path.join(UPLOAD_FOLDER, filename)
+        img.save(path, 'PNG')  # or 'JPEG'
+        image_paths.append(path)
+
+    # Zip images and return
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'w') as zipf:
+        for path in image_paths:
+            zipf.write(path, arcname=os.path.basename(path))
+    zip_buffer.seek(0)
+    return send_file(zip_buffer, as_attachment=True, download_name='pdf_pages.zip', mimetype='application/zip')
 
 if __name__ == '__main__':
     import os

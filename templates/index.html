@@ -1,20 +1,31 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>PDF Tools</title>
+  <meta charset="UTF-8">
+  <title>PDF Web Tool</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  <h1>PDF Tools</h1>
+
+  <p><strong>Note:</strong> Uploaded files are <u>not saved</u> on the server. They are processed temporarily and deleted after use.</p>
+
   <h2>Merge PDFs</h2>
   <form action="/merge" method="post" enctype="multipart/form-data">
-    <input type="file" name="pdfs" multiple>
+    <input type="file" name="pdfs" accept="application/pdf" multiple required>
     <button type="submit">Merge</button>
   </form>
 
-  <h2>Split PDF</h2>
+  <h2>Split PDF (Each Page as Separate PDF)</h2>
   <form action="/split" method="post" enctype="multipart/form-data">
-    <input type="file" name="pdf">
+    <input type="file" name="pdf" accept="application/pdf" required>
     <button type="submit">Split</button>
+  </form>
+
+  <h2>Split PDF to Images</h2>
+  <form action="/split-to-images" method="post" enctype="multipart/form-data">
+    <input type="file" name="pdf" accept="application/pdf" required>
+    <button type="submit">Convert to Images</button>
   </form>
 </body>
 </html>
