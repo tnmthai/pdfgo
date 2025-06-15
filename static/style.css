@@ -31,3 +31,50 @@ button {
 button:hover {
   background: #003f7f;
 }
+
+/* Basic Nav Styling */
+.navbar {
+  background-color: #333;
+  padding: 0;
+}
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+.menu > li {
+  position: relative;
+}
+.menu a {
+  display: block;
+  padding: 14px 20px;
+  color: white;
+  text-decoration: none;
+}
+.menu a:hover {
+  background-color: #555;
+}
+
+/* Dropdown Menu */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #444;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  min-width: 160px;
+}
+.dropdown-menu li a {
+  padding: 12px 16px;
+  color: white;
+}
+.dropdown-menu li a:hover {
+  background-color: #666;
+}
